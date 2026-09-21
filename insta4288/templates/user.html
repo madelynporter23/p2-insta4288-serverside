@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Insta4288</title>
+</head>
+<body>
+  <header>
+    <a href="/">Insta4288</a>
+    <a href="/explore/">explore</a>
+    <a href="/users/{{ logname }}/">{{ logname }}</a>
+  </header>
+
+  <h1>{{ username }}</h1>
+
+  {% if username == logname %}
+    <a href="/accounts/edit/">Edit profile</a>
+
+    <form action="/accounts/logout/" method="post">
+      <input type="submit" name="logout" value="Logout">
+    </form>
+  {% else %}
+    {% if logname_follows_username %}
+      <p>following</p>
+      <form action="/following/?target=/users/{{ username }}/" method="post">
+        <input type="submit" name="unfollow" value="unfollow">
+        <input type="hidden" name="username" value="{{ username }}">
+        <input type="hidden" name="operation" value="unfollow">
+      </form>
+    {% else %}
+      <p>not following</p>
+      <form action="/following/?target=/users/{{ username }}/" method="post">
+        <input type="submit" name="follow" value="follow">
+        <input type="hidden" name="username" value="{{ username }}">
+        <input type="hidden" name="operation" value="follow">
+      </form>
+    {% endif %}
+  {% endif %}
+
+  <p>{{ total_posts }} posts</p>
+
+  <a href="/users/{{ username }}/followers/">
+    {{ followers }} followers
+  </a>
+
+  <a href="/users/{{ username }}/following/">
+    {{ following }} following
+  </a>
+
+  <p>{{ fullname }}</p>
+
+  {% if posts %}
+    {% for post in posts %}
+      <a href="/posts/{{ post.postid }}/">
+        <img src="/uploads/{{ post.filename }}" alt="post image">
+      </a>
+    {% endfor %}
+  {% else %}
+    <p>No posts yet.</p>
+  {% endif %}
+
+  {% if username == logname %}
+    <form
+      action="/posts/?target=/users/{{ username }}/"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="file" required>
+      <input type="submit" name="create_post" value="upload new post">
+      <input type="hidden" name="operation" value="create">
+    </form>
+  {% endif %}
+</body>
+</html>

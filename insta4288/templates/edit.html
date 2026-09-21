@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Insta4288</title>
+</head>
+<body>
+
+  <a href="/">Insta4288</a>
+  <a href="/explore/">explore</a>
+  <a href="/users/{{ logname }}/">{{ logname }}</a>
+
+  <img src="/uploads/{{ user.filename }}" alt="{{ user.username }}">
+
+  <form action="/accounts/?target=/accounts/edit/"
+        method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="text" name="fullname"
+           value="{{ user.fullname }}" required>
+    <input type="email" name="email"
+           value="{{ user.email }}" required>
+    <input type="submit" name="update" value="submit">
+    <input type="hidden" name="operation" value="edit_account">
+  </form>
+
+  <a href="/accounts/password/">Change password</a>
+  <a href="/accounts/delete/">Delete account</a>
+
+</body>
+</html>

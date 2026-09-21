@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Insta4288</title>
+</head>
+<body>
+
+  <a href="/">Insta4288</a>
+  <a href="/explore/">explore</a>
+  <a href="/users/{{ logname }}/">{{ logname }}</a>
+
+  {% for post in posts %}
+  <div>
+
+    <a href="/users/{{ post.owner }}/">
+      <img src="/uploads/{{ post.owner_img_url }}" alt="{{ post.owner }}">
+      {{ post.owner }}
+    </a>
+
+    <a href="/posts/{{ post.postid }}/">
+      {{ post.created }}
+    </a>
+
+    <img src="/uploads/{{ post.filename }}" alt="post image">
+
+    {% if post.likes == 1 %}
+      <p>{{ post.likes }} like</p>
+    {% else %}
+      <p>{{ post.likes }} likes</p>
+    {% endif %}
+
+    {% for comment in post.comments %}
+      <p>
+        <a href="/users/{{ comment.owner }}/">{{ comment.owner }}</a>
+        {{ comment.text }}
+      </p>
+    {% endfor %}
+
+    {% if post.liked %}
+      <form action="/likes/?target=/" method="post"
+            enctype="multipart/form-data">
+        <input type="hidden" name="operation" value="unlike">
+        <input type="hidden" name="postid" value="{{ post.postid }}">
+        <input type="submit" name="unlike" value="unlike">
+      </form>
+    {% else %}
+      <form action="/likes/?target=/" method="post"
+            enctype="multipart/form-data">
+        <input type="hidden" name="operation" value="like">
+        <input type="hidden" name="postid" value="{{ post.postid }}">
+        <input type="submit" name="like" value="like">
+      </form>
+    {% endif %}
+
+    <form action="/comments/?target=/" method="post"
+          enctype="multipart/form-data">
+      <input type="hidden" name="operation" value="create">
+      <input type="hidden" name="postid" value="{{ post.postid }}">
+      <input type="text" name="text" required>
+      <input type="submit" name="comment" value="comment">
+    </form>
+
+  </div>
+  {% endfor %}
+
+</body>
+</html>

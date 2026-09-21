@@ -1,0 +1,17 @@
+#!/bin/bash
+# insta4288run
+
+# Stop on errors
+set -Eeuo pipefail
+
+# Check if database exists
+if [ ! -f var/insta4288.sqlite3 ]; then
+    echo "Error: can't find database var/insta4288.sqlite3"
+    echo "Try: ./bin/insta4288db create"
+    exit 1
+fi
+
+# Run development server
+set -x
+flask --app insta4288 --debug run --host 0.0.0.0 --port 8000
+

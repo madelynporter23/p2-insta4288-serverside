@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -Eeuxo pipefail
+
+pycodestyle insta4288
+pydocstyle insta4288
+pylint insta4288
+pytest -v tests
